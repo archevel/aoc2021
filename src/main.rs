@@ -7,6 +7,10 @@ fn main() -> std::io::Result<()> {
     aoc_01a()?;
     println!("aoc_01b");
     aoc_01b()?;
+    println!("aoc_02a");
+    aoc_02a()?;
+    println!("aoc_02b");
+    aoc_02b()?;
     Ok(())
 }
 
@@ -61,5 +65,68 @@ fn aoc_01b() -> std::io::Result<()> {
         
     }
     println!("{}", incs);
+    Ok(())
+}
+
+fn aoc_02a() -> std::io::Result<()> {
+    let f = File::open("aoc_02a.txt")?;
+    let reader = BufReader::new(f);
+
+    let lines = reader.lines().map(|l| l.unwrap());
+
+    let mut depth = 0;
+    let mut horiz = 0;
+    for line in lines {
+        let mut split = line.split_whitespace();
+        let cmd = split.next();
+        let magnitude:u32 = split.last().unwrap().parse().unwrap();
+        match cmd {
+            Some("forward") => {
+                horiz = horiz + magnitude;
+            },
+            Some("up") => {
+                depth = depth - magnitude;
+            },
+            Some("down") =>  {
+                depth = depth + magnitude;
+            },
+            _ => println!("Something bad..."),
+        }
+        
+    }
+    println!("{}", depth * horiz);
+    Ok(())
+}
+
+fn aoc_02b() -> std::io::Result<()> {
+    let f = File::open("aoc_02b.txt")?;
+    let reader = BufReader::new(f);
+
+    let lines = reader.lines().map(|l| l.unwrap());
+
+    let mut aim = 0;
+    let mut horiz = 0;
+    let mut depth = 0;
+    
+    for line in lines {
+        let mut split = line.split_whitespace();
+        let cmd = split.next();
+        let magnitude:u32 = split.last().unwrap().parse().unwrap();
+        match cmd {
+            Some("forward") => {
+                horiz = horiz + magnitude;
+                depth = depth + aim * magnitude;
+            },
+            Some("up") => {
+                aim = aim - magnitude;
+            },
+            Some("down") =>  {
+                aim = aim + magnitude;
+            },
+            _ => println!("Something bad..."),
+        }
+        
+    }
+    println!("{}", depth * horiz);
     Ok(())
 }
